@@ -1,0 +1,51 @@
+{
+  "name": "product-rating-system",
+  "version": "1.0.0",
+  "description": "Evernode HotPocket smart contract converted from the RateIt Express/SQLite product rating system: product catalogue, Bayesian ranking, one review per user per product, helpful votes and admin moderation, with users identified by HotPocket public keys.",
+  "main": "src/startup.js",
+  "license": "MIT",
+  "author": "",
+  "keywords": [
+    "evernode",
+    "hotpocket",
+    "smart-contract",
+    "product-rating",
+    "reviews"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "scripts": {
+    "dev": "nodemon src/startup.js",
+    "start": "npm run build && set HP_INSTANCE_IMAGE=evernode/sashimono:hp.0.6.4-ubt.20.04-njs.20 && hpdevkit deploy dist",
+    "start1": "npm run build1 && export HP_INSTANCE_IMAGE=evernodedev/sashimono:hp.0.6.4-ubt.20.04-njs.20 && hpdevkit deploy dist",
+    "removeDist": "if exist dist rmdir /s /q dist",
+    "removeDistLinux": "rm -rf dist",
+    "dockerBuild": "docker build -f Dockerfile.Build -t product-rating-system-image:latest .",
+    "dockerRun": "docker run -d --name product-rating-system-build-container product-rating-system-image",
+    "fetchDist": "docker cp product-rating-system-build-container:/product-rating-system-contract/dist/ ./dist/",
+    "copyStaticFiles": "copy src\\settings.json dist && copy hp.cfg.override dist && copy .env dist && xcopy /s /i /y src\\Data.Deploy\\Scripts dist\\dbScripts",
+    "copyStaticFilesLinux": "cp src/settings.json dist && cp hp.cfg.override dist && cp .env dist && mkdir -p dist/dbScripts && cp -r src/Data.Deploy/Scripts/* dist/dbScripts/",
+    "stopContainer": "docker rm -f product-rating-system-build-container && docker image prune -f && docker container prune -f",
+    "buildLinux": "npx ncc build ./src/startup.js -o dist",
+    "buildLinux:prod": "npx ncc build ./src/startup.js --minify -o dist",
+    "build1": "npm run removeDistLinux && npm run buildLinux && npm run copyStaticFilesLinux",
+    "build": "npm run removeDist && npm run dockerBuild && npm run dockerRun && npm run fetchDist && npm run copyStaticFiles && npm run stopContainer",
+    "test": "cd src/Test && npm install && node run-tests.js"
+  },
+  "dependencies": {
+    "@vercel/ncc": "0.36.1",
+    "bson": "6.0.0",
+    "crypto": "1.0.1",
+    "hotpocket-nodejs-contract": "0.7.4",
+    "sqlite3": "5.1.6",
+    "tweetnacl": "1.0.3",
+    "uuid": "9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.11.0",
+    "@types/uuid": "9.0.0",
+    "nodemon": "3.0.1",
+    "prettier": "3.0.3"
+  }
+}

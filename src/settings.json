@@ -1,0 +1,15 @@
+{
+	"settings": {
+		"postExecutionScriptName": "./post_exec.sh",
+		"dbPath": "ratings.db",
+		"dbScriptsFolderPath": "./dbScripts",
+		"newContractZipFileName": "./newContractData.zip",
+		"rating": {
+			"priorWeight": 5,
+			"defaultMeanRating": 3,
+			"productPageSize": 12,
+			"reviewPageSize": 10,
+			"maxPageSize": 50
+		}
+	}
+}

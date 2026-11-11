@@ -1,0 +1,10 @@
+.vs
+.vscode
+node_modules
+dist
+bundle
+hosts.txt
+instances.txt
+init.json
+*.db
+.env.development.local

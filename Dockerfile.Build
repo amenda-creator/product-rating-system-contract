@@ -1,0 +1,26 @@
+# Stage 2: Create a clean Ubuntu-based image for copying built files
+FROM ubuntu:24.04
+
+# Install necessary packages
+RUN apt-get update && apt-get install -y nodejs npm
+
+# Copy your project files into the container
+WORKDIR /product-rating-system-contract
+
+# Clear the contents of the working directory
+RUN rm -rf ./*
+
+# Copy package.json and package-lock.json
+COPY package*.json /product-rating-system-contract/
+
+# Install dependencies
+RUN npm install
+
+COPY src /product-rating-system-contract/src/
+
+# Copy the HotPocket config override and environment file (MANDATORY)
+COPY hp.cfg.override /product-rating-system-contract/
+COPY .env /product-rating-system-contract/
+
+# Build your project using the npm script instead of manual ncc build
+RUN npm run buildLinux

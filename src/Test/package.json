@@ -1,0 +1,14 @@
+{
+  "name": "product-rating-system-tests",
+  "version": "1.0.0",
+  "description": "Integration tests for the Evernode product rating system contract (connects to wss://localhost:8081).",
+  "main": "run-tests.js",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "test": "node run-tests.js"
+  },
+  "dependencies": {
+    "hotpocket-js-client": "0.5.7"
+  }
+}
